@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Demo: Processing satellite imagery</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.js"></script>
+    <link
+      href="https://api.tiles.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      #map {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <style>
+      body {
+        overflow: hidden;
+      }
+
+      body * {
+        -webkit-touch-callout: none;
+        user-select: none;
+      }
+
+      .map {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+      }
+
+
+    </style>
+
+    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-compare/v0.4.0/mapbox-gl-compare.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-compare/v0.4.0/mapbox-gl-compare.css"
+      type="text/css"
+    />
+    <div id="comparison-container">
+      <div id="before" class="map"></div>
+      <div id="after" class="map"></div>
+    </div>
+    <pre id="info"></pre>
+    <script>
+      mapboxgl.accessToken = 'pk.eyJ1IjoiZ3VzMjMiLCJhIjoiY2x4czU1NTl4MDRlbDJpcTByZTZvZ3p1dyJ9.DxhTftgCEJ_7lCnIg0JFGg';
+
+      const afterTileset = 'gus23.640e040v';
+      const bounds = [
+        [-73.56, 45.53], // Southwest coordinates
+        [-73.4, 45.6] // Northeast coordinates
+        ];
+
+      const beforeMap = new mapboxgl.Map({
+        container: 'before',
+        style: 'mapbox://styles/mapbox/satellite-streets-v12',
+        center: [-73.46200119770934, 45.555],
+        zoom: 14,
+        maxBounds:bounds
+        });
+
+      const afterMap = new mapboxgl.Map({
+        container: 'after',
+        style: 'mapbox://styles/gus23/clxs5es8603jb01qkatll5mtx/draft',
+        center: [-73.46200119770934, 45.555],
+        zoom: 14,
+        maxBounds:bounds
+        });
+
+      //MARKERS
+      const markerbefore = new mapboxgl.Marker() 
+        .setLngLat([-73.4727245630324,45.544328933719484])
+        .addTo(beforeMap)
+      
+      const markerafter = new mapboxgl.Marker() 
+        .setLngLat([-73.4727245630324,45.544328933719484])
+        .addTo(afterMap)
+ 
+      //CONTROLS
+      beforeMap.addControl(new mapboxgl.FullscreenControl(), 'top-right');
+      beforeMap.addControl(new mapboxgl.NavigationControl(), 'top-right');
+
+      afterMap.addControl(new mapboxgl.FullscreenControl(), 'top-right');
+      afterMap.addControl(new mapboxgl.NavigationControl(), 'top-right');
+
+      // A selector or reference to HTML element
+      const container = '#comparison-container';
+
+      const map = new mapboxgl.Compare(beforeMap, afterMap, container, {});
+      
+    </script>
+  </body>
+</html>
